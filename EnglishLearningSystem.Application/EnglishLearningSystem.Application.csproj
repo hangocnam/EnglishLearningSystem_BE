@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="UseCases\**" />
+    <EmbeddedResource Remove="UseCases\**" />
+    <None Remove="UseCases\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="UseCases\Users\Commands\Login\LoginCommand.cs" />
+    <Compile Include="UseCases\Users\Commands\Login\LoginCommandHandler.cs" />
+    <Compile Include="UseCases\Users\Commands\Login\LoginCommandValidator.cs" />
+    <Compile Include="UseCases\Users\Commands\RegisterUser\RegisterUserCommand.cs" />
+    <Compile Include="UseCases\Users\Commands\RegisterUser\RegisterUserCommandHandler.cs" />
+    <Compile Include="UseCases\Users\Commands\RegisterUser\RegisterUserCommandValidator.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="10.4.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.4.0" />
+    <PackageReference Include="MediatR" Version="12.5.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EnglishLearningSystem.Domain\EnglishLearningSystem.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <Folder Include="Securities\" />
+	  <Folder Include="UseCases\Users\Queries\NewFolder\" />
+  </ItemGroup>
+
+</Project>

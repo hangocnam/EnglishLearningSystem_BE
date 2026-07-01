@@ -1,0 +1,6 @@
+@EnglishLearningSystem.API_HostAddress = http://localhost:5008
+
+GET {{EnglishLearningSystem.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
