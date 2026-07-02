@@ -13,11 +13,8 @@ namespace EnglishLearningSystem.Application.UseCases.Users.Commands.Login
     {
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
-
-            string passwordHash = _passwordHasher.GeneratePasswordHashed(request.Password);
-
-            if (!passwordHash.Equals(user?.PasswordHash))
+            var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken) ?? throw new UnauthorizedException();
+            if (!_passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
             {
                 throw new UnauthorizedException();
             }

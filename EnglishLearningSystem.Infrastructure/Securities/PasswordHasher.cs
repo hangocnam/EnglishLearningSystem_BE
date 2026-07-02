@@ -8,5 +8,10 @@ namespace EnglishLearningSystem.Infrastructure.Securities
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
+
+        public bool VerifyPassword(string password, string passwordHashed)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, passwordHashed);
+        }
     }
 }
