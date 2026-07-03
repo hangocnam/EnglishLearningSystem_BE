@@ -25,19 +25,27 @@ namespace EnglishLearningSystem.Infrastructure.Securities
             var claims = new List<Claim>
             {
                 new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new(JwtRegisteredClaimNames.Name, user.UserName),
                 new(JwtRegisteredClaimNames.Email, user.Email),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            var targetAlgorithm = _jwtSetting.Algorithm.ToUpper() switch
+            {
+                "SHA256" => SecurityAlgorithms.HmacSha256Signature,
+                _ => SecurityAlgorithms.HmacSha256Signature
             };
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
+
                 Expires = DateTime.UtcNow.AddMinutes(_jwtSetting.ExpiryMinutes),
                 Issuer = _jwtSetting.Issuer,
                 Audience = _jwtSetting.Audience,
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha256Signature)
+                    targetAlgorithm)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);

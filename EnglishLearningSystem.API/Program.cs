@@ -1,7 +1,7 @@
-﻿using EnglishLearningSystem.API.Middleware;
+﻿using EnglishLearningSystem.API;
+using EnglishLearningSystem.API.Middleware;
 using EnglishLearningSystem.Application;
 using EnglishLearningSystem.Infrastructure;
-using EnglishLearningSystem.Infrastructure.Persistence.EFCore;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -10,12 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
-//========DB connection======
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
+builder.Services.AddWebAPI();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -34,6 +31,7 @@ app.UseMiddleware<ExceptionMiddeware>();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

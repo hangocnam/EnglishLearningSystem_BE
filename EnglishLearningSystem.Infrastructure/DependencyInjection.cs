@@ -3,6 +3,7 @@ using EnglishLearningSystem.Application.Repositories;
 using EnglishLearningSystem.Infrastructure.Persistence.EFCore;
 using EnglishLearningSystem.Infrastructure.Persistence.EFCore.Repositories;
 using EnglishLearningSystem.Infrastructure.Securities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,6 +29,10 @@ namespace EnglishLearningSystem.Infrastructure
             IConfiguration configuration)
         {
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+
+            //========DB connection======
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
             return services;
         }
