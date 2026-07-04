@@ -9,7 +9,7 @@ namespace EnglishLearningSystem.Application.Repositories
 {
     public interface IUserRepository
     {
-        Task<User> GetByIdAsync(int id);
+        Task<User?> GetByIdAsync(Guid id);
         Task<List<User>> GetAllAsync();
         Task AddAsync(User user, CancellationToken ct = default);
         Task UpdateAsync(User user, CancellationToken ct = default);

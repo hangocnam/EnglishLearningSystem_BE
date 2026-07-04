@@ -38,9 +38,9 @@ namespace EnglishLearningSystem.Infrastructure.Persistence.EFCore.Repositories
             return await _context.Users.AsNoTracking().Where(x => x.Email == email).FirstOrDefaultAsync(cancellationToken: ct);
         }
 
-        public Task<User> GetByIdAsync(int id)
+        public Task<User?> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return _context.Users.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public Task UpdateAsync(User user, CancellationToken ct = default)

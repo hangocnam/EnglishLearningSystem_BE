@@ -27,6 +27,14 @@ namespace EnglishLearningSystem.API.Controllers
             return Ok(response);
         }
 
+        [Authorize]
+        [Route("Current")]
+        public async Task<IActionResult> GetCurrentUserInfo()
+        {
+
+        }
+
+        [Authorize]
         [Route("GetListUser")]
         [HttpGet]
         public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)
