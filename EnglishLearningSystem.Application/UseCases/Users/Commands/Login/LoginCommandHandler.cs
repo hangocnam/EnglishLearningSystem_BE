@@ -1,19 +1,19 @@
 ﻿using EnglishLearningSystem.Application.Common.Exceptions;
 using EnglishLearningSystem.Application.Interfaces;
-using EnglishLearningSystem.Application.Repositories;
+using EnglishLearningSystem.Application.Services;
 using MediatR;
 
 namespace EnglishLearningSystem.Application.UseCases.Users.Commands.Login
 {
     public class LoginCommandHandler(
-        IUserRepository _userRepository,
+        IUserQueryService _userQueryService,
         IPasswordHasher _passwordHasher,
         ITokenService _tokenService
         ) : IRequestHandler<LoginCommand, LoginResponse>
     {
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken) ?? throw new UnauthorizedException();
+            var user = await _userQueryService.GetByEmailAsync(request.Email, cancellationToken) ?? throw new UnauthorizedException();
             if (!_passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
             {
                 throw new UnauthorizedException();

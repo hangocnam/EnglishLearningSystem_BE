@@ -1,7 +1,9 @@
 ﻿using EnglishLearningSystem.Application.Interfaces;
 using EnglishLearningSystem.Application.Repositories;
+using EnglishLearningSystem.Application.Services;
 using EnglishLearningSystem.Infrastructure.Persistence.EFCore;
 using EnglishLearningSystem.Infrastructure.Persistence.EFCore.Repositories;
+using EnglishLearningSystem.Infrastructure.Persistence.EFCore.Services;
 using EnglishLearningSystem.Infrastructure.Securities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -43,6 +45,9 @@ namespace EnglishLearningSystem.Infrastructure
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<IUserQueryService, UserQueryService>();
+
 
             return services;
         }

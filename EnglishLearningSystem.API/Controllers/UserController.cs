@@ -1,7 +1,8 @@
-﻿using MediatR;
+﻿using EnglishLearningSystem.Application.UseCases.Users.Commands.RegisterUser;
+using EnglishLearningSystem.Application.UseCases.Users.Queries.GetCurrentUserInfo;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using EnglishLearningSystem.Application.UseCases.Users.Commands.RegisterUser;
 
 namespace EnglishLearningSystem.API.Controllers
 {
@@ -29,19 +30,22 @@ namespace EnglishLearningSystem.API.Controllers
 
         [Authorize]
         [Route("Current")]
-        public async Task<IActionResult> GetCurrentUserInfo()
-        {
-
-        }
-
-        [Authorize]
-        [Route("GetListUser")]
         [HttpGet]
-        public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetCurrentUserInfo(CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(cancellationToken);
-
+            var query = new GetCurrentUserInfoQuery();
+            var response = await _mediator.Send(query, cancellationToken);
             return Ok(response);
         }
+
+        //[Authorize]
+        //[Route("GetListUser")]
+        //[HttpGet]
+        //public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)
+        //{
+        //    var response = await _mediator.Send(cancellationToken);
+
+        //    return Ok(response);
+        //}
     }
 }

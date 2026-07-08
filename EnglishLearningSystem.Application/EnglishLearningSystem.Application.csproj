@@ -19,13 +19,17 @@
     <Compile Include="UseCases\Users\Commands\RegisterUser\RegisterUserCommand.cs" />
     <Compile Include="UseCases\Users\Commands\RegisterUser\RegisterUserCommandHandler.cs" />
     <Compile Include="UseCases\Users\Commands\RegisterUser\RegisterUserCommandValidator.cs" />
+    <Compile Include="UseCases\Users\Queries\GetCurrentUserInfo\GetCurrentUserInfoHandler.cs" />
+    <Compile Include="UseCases\Users\Queries\GetCurrentUserInfo\GetCurrentUserInfoQuery.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.2.0" />
     <PackageReference Include="FluentValidation" Version="10.4.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.4.0" />
     <PackageReference Include="MediatR" Version="12.5.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
+    <PackageReference Include="System.Linq.Async" Version="7.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,7 +38,6 @@
 
   <ItemGroup>
 	  <Folder Include="Securities\" />
-	  <Folder Include="UseCases\Users\Queries\NewFolder\" />
   </ItemGroup>
 
 </Project>

@@ -35,12 +35,13 @@ namespace EnglishLearningSystem.Infrastructure.Persistence.EFCore.Repositories
 
         public async Task<User?> GetByEmailAsync(string email, CancellationToken ct = default)
         {
-            return await _context.Users.AsNoTracking().Where(x => x.Email == email).FirstOrDefaultAsync(cancellationToken: ct);
+            return await _context.Users
+                .FirstOrDefaultAsync(x => x.Email == email, ct);
         }
 
-        public Task<User?> GetByIdAsync(Guid id)
+        public async Task<User?> GetByIdAsync(Guid id)
         {
-            return _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public Task UpdateAsync(User user, CancellationToken ct = default)

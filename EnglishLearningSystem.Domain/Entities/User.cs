@@ -18,10 +18,10 @@ namespace EnglishLearningSystem.Domain.Entities
             return new User
             {
                 Id = Guid.NewGuid(),
-                UserName = userName,
-                Email = email,
+                UserName = userName.Trim(),
+                Email = email.Trim(),
                 PasswordHash = passwordHash,
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber.Trim()
             };
         }
     }

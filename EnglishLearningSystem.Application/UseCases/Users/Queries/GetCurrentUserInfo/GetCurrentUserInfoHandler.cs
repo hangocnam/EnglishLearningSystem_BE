@@ -1,34 +1,29 @@
 ﻿using EnglishLearningSystem.Application.Common.Exceptions;
 using EnglishLearningSystem.Application.Interfaces;
 using EnglishLearningSystem.Application.Repositories;
+using EnglishLearningSystem.Application.Services;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EnglishLearningSystem.Application.UseCases.Users.Queries.GetCurrentUserInfo
 {
     public sealed class GetCurrentUserInfoHandler : IRequestHandler<GetCurrentUserInfoQuery, GetCurrentUserInfoResponse>
     {
-        private readonly IUserRepository _userRepository;
         private readonly ICurrentUser _currentUser;
+        private readonly IUserQueryService _userQueryService;
 
-        public GetCurrentUserInfoHandler(IUserRepository userRepository, ICurrentUser currentUser)
+        public GetCurrentUserInfoHandler(ICurrentUser currentUser, IUserQueryService userQueryService)
         {
-            _userRepository = userRepository;
             _currentUser = currentUser;
+            _userQueryService = userQueryService;
         }
 
-        public Task<GetCurrentUserInfoResponse> Handle(GetCurrentUserInfoQuery request, CancellationToken cancellationToken)
+        public async Task<GetCurrentUserInfoResponse> Handle(GetCurrentUserInfoQuery request, CancellationToken cancellationToken)
         {
-            if (_currentUser.UserId is null)
-            {
-                throw new UnauthorizedException();
-            }
+            Guid? userId = _currentUser.UserId ?? throw new UnauthorizedException();
 
+            var userInfo = await _userQueryService.GetCurrentUserInfoAsync(userId.Value, cancellationToken);
 
+            return userInfo ?? throw new UnauthorizedException();
         }
     }
 }
