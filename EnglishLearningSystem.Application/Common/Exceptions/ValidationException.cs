@@ -10,7 +10,7 @@
             Errors = errors.AsReadOnly();
         }
 
-        public ValidationException(string field, string message): base(nameof(ValidationException))
+        public ValidationException(string field, string message) : base(nameof(ValidationException))
         {
             Errors = new Dictionary<string, string[]>
             {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EnglishLearningSystem.Application.Common.Exceptions
+﻿namespace EnglishLearningSystem.Application.Common.Exceptions
 {
     public abstract class ApplicationException : Exception
     {

@@ -2,7 +2,6 @@
 using EnglishLearningSystem.API.Middleware;
 using EnglishLearningSystem.Application;
 using EnglishLearningSystem.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);

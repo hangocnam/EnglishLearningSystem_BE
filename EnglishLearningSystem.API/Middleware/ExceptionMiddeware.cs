@@ -1,5 +1,4 @@
 ﻿using EnglishLearningSystem.Application.Common.Exceptions;
-using EnglishLearningSystem.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EnglishLearningSystem.API.Middleware

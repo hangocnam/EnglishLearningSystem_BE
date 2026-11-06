@@ -28,7 +28,7 @@ namespace EnglishLearningSystem.Application.UseCases.Users.Commands.RegisterUser
 
             var passwordHash = _passwordHasher.GeneratePasswordHashed(request.Password);
 
-            var user = User.Create(request.FullName, request.Email, passwordHash,  request.PhoneNumber);
+            var user = User.Create(request.FullName, request.Email, passwordHash, request.PhoneNumber);
 
             await _userRepository.AddAsync(user, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

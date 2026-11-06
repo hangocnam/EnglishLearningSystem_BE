@@ -13,7 +13,7 @@ namespace EnglishLearningSystem.Domain.Entities
 
         private User() { }
 
-        public static User Create (string userName, string email, string passwordHash, string phoneNumber)
+        public static User Create(string userName, string email, string passwordHash, string phoneNumber)
         {
             return new User
             {

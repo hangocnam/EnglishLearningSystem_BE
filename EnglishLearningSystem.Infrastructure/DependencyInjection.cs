@@ -27,7 +27,7 @@ namespace EnglishLearningSystem.Infrastructure
         }
 
         private static IServiceCollection AddConfigs(
-            this IServiceCollection services, 
+            this IServiceCollection services,
             IConfiguration configuration)
         {
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));

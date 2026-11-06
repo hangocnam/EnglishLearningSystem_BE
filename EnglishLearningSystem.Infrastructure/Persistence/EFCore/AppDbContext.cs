@@ -1,5 +1,4 @@
-﻿using EnglishLearningSystem.Application.Interfaces;
-using EnglishLearningSystem.Domain.Entities;
+﻿using EnglishLearningSystem.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace EnglishLearningSystem.Infrastructure.Persistence.EFCore

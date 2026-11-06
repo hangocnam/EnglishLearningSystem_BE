@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EnglishLearningSystem.Application.Common.Errors
+﻿namespace EnglishLearningSystem.Application.Common.Errors
 {
     public class ErrorCodes
     {
