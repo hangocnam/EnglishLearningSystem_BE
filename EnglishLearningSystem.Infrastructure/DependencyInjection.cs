@@ -34,7 +34,8 @@ namespace EnglishLearningSystem.Infrastructure
 
             //========DB connection======
             services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
+                npgql => npgql.EnableRetryOnFailure(3, TimeSpan.FromSeconds(5), null)));
 
             return services;
         }

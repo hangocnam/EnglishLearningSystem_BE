@@ -1,39 +1,32 @@
-﻿using FluentValidation;
+﻿using EnglishLearningSystem.Domain.Common.Results;
+using EnglishLearningSystem.Domain.Errors;
+using FluentValidation;
 using MediatR;
 
 namespace EnglishLearningSystem.Application.Common.Behaviors
 {
-    public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
+    internal sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
+        : IPipelineBehavior<TRequest, TResponse>
+        where TRequest : notnull
+        where TResponse : IResultFactory<TResponse>
     {
-        private readonly IEnumerable<IValidator<TRequest>> _validators;
 
-        public ValidationBehavior(IEnumerable<IValidator<TRequest>> validator)
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken ct)
         {
-            _validators = validator;
-        }
-
-        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
-        {
-            if (!_validators.Any())
+            if (!validators.Any())
             {
-                return await next(cancellationToken);
+                return await next(ct);
             }
 
-            var context = new ValidationContext<TRequest>(request);
+            var results = await Task.WhenAll(validators.Select(v => v.ValidateAsync(request, ct)));
 
-            var errors = _validators
-                .Select(v => v.Validate(context))
-                .SelectMany(e => e.Errors)
-                .Where(f => f is not null)
-                .GroupBy(f => f.PropertyName)
-                .ToDictionary(
-                    g => g.Key,
-                    g => g.Select(f => f.ErrorMessage).ToArray());
+            var fieldErrors = results.SelectMany(r => r.Errors)
+                .Select(f => new FieldError(f.PropertyName, f.ErrorCode, 
+                    f.FormattedMessagePlaceholderValues?.ToDictionary(p => p.Key, p => (object?)p.Value)))
+                .ToList();
+            
 
-            if (errors.Any())
-                throw new Exceptions.ValidationException(errors);
-
-            return await next(cancellationToken);
+            return fieldErrors.Count == 0 ? await next(ct) : TResponse.Failure(GeneralErrors.ValidationFailed(fieldErrors));
         }
     }
 }

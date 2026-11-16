@@ -1,7 +1,9 @@
-﻿namespace EnglishLearningSystem.Domain.Exceptions
+﻿using EnglishLearningSystem.Domain.Common.Results;
+
+namespace EnglishLearningSystem.Domain.Exceptions
 {
-    public abstract class DomainException : Exception
+    public class DomainException(Error error) : Exception (error.Code)
     {
-        protected DomainException(string message) : base(message) { }
+        public Error Error { get; } = error;
     }
 }

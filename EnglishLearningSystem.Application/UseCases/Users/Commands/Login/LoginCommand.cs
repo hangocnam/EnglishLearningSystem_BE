@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using EnglishLearningSystem.Domain.Common.Results;
+using MediatR;
 
 namespace EnglishLearningSystem.Application.UseCases.Users.Commands.Login
 {
@@ -6,7 +7,7 @@ namespace EnglishLearningSystem.Application.UseCases.Users.Commands.Login
     (
         string Email,
         string Password
-    ) : IRequest<LoginResponse>;
+    ) : IRequest<Result<LoginResponse>>;
 
 
     public record LoginResponse

@@ -4,44 +4,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EnglishLearningSystem.Infrastructure.Persistence.EFCore.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository(AppDbContext context) : IUserRepository
     {
-        private readonly AppDbContext _context;
-
-        public UserRepository(AppDbContext context)
-        {
-            _context = context;
-        }
-
-        public async Task AddAsync(User user, CancellationToken ct = default)
-        {
-            await _context.Users.AddAsync(user, ct);
-        }
-
-        public Task<bool> ExistsByEmailAsync(string email, CancellationToken ct = default)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<User>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<User?> GetByEmailAsync(string email, CancellationToken ct = default)
         {
-            return await _context.Users
-                .FirstOrDefaultAsync(x => x.Email == email, ct);
+            var normalizedEmail = email.Trim().ToLowerInvariant();
+            return await context.Users
+                .FirstOrDefaultAsync(x => x.Email == normalizedEmail, ct);
         }
 
         public async Task<User?> GetByIdAsync(Guid id)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            return await context.Users.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task UpdateAsync(User user, CancellationToken ct = default)
+        public async Task AddAsync(User user, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            await context.Users.AddAsync(user, ct);
         }
     }
 }

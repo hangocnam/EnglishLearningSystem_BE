@@ -2,17 +2,10 @@
 
 namespace EnglishLearningSystem.Infrastructure.Persistence.EFCore
 {
-    public class UnitOfWork : IUnitOfWork
+    public sealed class UnitOfWork(AppDbContext context) : IUnitOfWork
     {
-        private readonly AppDbContext _context;
-        public UnitOfWork(AppDbContext context)
-        {
-            _context = context;
-        }
+        private readonly AppDbContext _context = context;
 
-        public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            await _context.SaveChangesAsync(cancellationToken);
-        }
+        public async Task SaveChangesAsync(CancellationToken cancellationToken = default) => await _context.SaveChangesAsync(cancellationToken);
     }
 }

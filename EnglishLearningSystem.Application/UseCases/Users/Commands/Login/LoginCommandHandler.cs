@@ -1,27 +1,35 @@
-﻿using EnglishLearningSystem.Application.Common.Exceptions;
-using EnglishLearningSystem.Application.Interfaces;
+﻿using EnglishLearningSystem.Application.Interfaces;
+using EnglishLearningSystem.Application.Repositories;
 using EnglishLearningSystem.Application.Services;
+using EnglishLearningSystem.Domain.Common.Results;
+using EnglishLearningSystem.Domain.Errors;
 using MediatR;
 
 namespace EnglishLearningSystem.Application.UseCases.Users.Commands.Login
 {
-    public class LoginCommandHandler(
-        IUserQueryService _userQueryService,
-        IPasswordHasher _passwordHasher,
-        ITokenService _tokenService
-        ) : IRequestHandler<LoginCommand, LoginResponse>
+    internal sealed class LoginCommandHandler(
+        IUserRepository userRepo,
+        IPasswordHasher passwordHasher,
+        ITokenService tokenService
+        ) : IRequestHandler<LoginCommand, Result<LoginResponse>>
     {
-        public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
+        private const string DummyHash = "";
+        public async Task<Result<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userQueryService.GetByEmailAsync(request.Email, cancellationToken) ?? throw new UnauthorizedException();
-            if (!_passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
+            var user = await userRepo.GetByEmailAsync(request.Email, cancellationToken);
+
+            var isPasswordValid = passwordHasher.VerifyPassword(
+                request.Password,
+                user?.PasswordHash ?? DummyHash);
+            
+            if (user is null || !isPasswordValid)
             {
-                throw new UnauthorizedException();
+                return UserErrors.InvalidCredentials;
             }
 
-            var token = _tokenService.GenerateToken(user);
+            var token = tokenService.GenerateToken(user);
 
-            return new LoginResponse(token, user.UserName!, user.Role!);
+            return new LoginResponse(token, user.UserName, user.Role);
         }
     }
 }

@@ -1,14 +1,15 @@
-﻿using MediatR;
+﻿using EnglishLearningSystem.Domain.Common.Results;
+using MediatR;
 
 namespace EnglishLearningSystem.Application.UseCases.Users.Commands.RegisterUser
 {
     public record RegisterUserCommand(
             string Email,
             string Password,
-            string FullName,
+            string UserName,
             string PhoneNumber
 
-        ) : IRequest<RegisterUserResponse>;
+        ) : IRequest<Result<RegisterUserResponse>>;
 
     public record RegisterUserResponse(Guid UserId, string Email);
 }

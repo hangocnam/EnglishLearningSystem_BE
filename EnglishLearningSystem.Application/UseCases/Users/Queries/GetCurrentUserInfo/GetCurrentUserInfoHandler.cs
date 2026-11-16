@@ -1,28 +1,25 @@
 ﻿using EnglishLearningSystem.Application.Common.Exceptions;
 using EnglishLearningSystem.Application.Interfaces;
 using EnglishLearningSystem.Application.Services;
+using EnglishLearningSystem.Domain.Common.Results;
+using EnglishLearningSystem.Domain.Errors;
 using MediatR;
 
 namespace EnglishLearningSystem.Application.UseCases.Users.Queries.GetCurrentUserInfo
 {
-    public sealed class GetCurrentUserInfoHandler : IRequestHandler<GetCurrentUserInfoQuery, GetCurrentUserInfoResponse>
+    internal sealed class GetCurrentUserInfoHandler(ICurrentUser currentUser, IUserQueryService userQueryService) : IRequestHandler<GetCurrentUserInfoQuery, Result<GetCurrentUserInfoResponse>>
     {
-        private readonly ICurrentUser _currentUser;
-        private readonly IUserQueryService _userQueryService;
-
-        public GetCurrentUserInfoHandler(ICurrentUser currentUser, IUserQueryService userQueryService)
+        public async Task<Result<GetCurrentUserInfoResponse>> Handle(GetCurrentUserInfoQuery request, CancellationToken cancellationToken)
         {
-            _currentUser = currentUser;
-            _userQueryService = userQueryService;
-        }
+            Guid? userId = currentUser.UserId;
+            
+            if (userId is null)  return UserErrors.InvalidCredentials;
 
-        public async Task<GetCurrentUserInfoResponse> Handle(GetCurrentUserInfoQuery request, CancellationToken cancellationToken)
-        {
-            Guid? userId = _currentUser.UserId ?? throw new UnauthorizedException();
+            var userInfo = await userQueryService.GetCurrentUserInfoAsync(userId.Value, cancellationToken);
 
-            var userInfo = await _userQueryService.GetCurrentUserInfoAsync(userId.Value, cancellationToken);
+            if (userInfo is null) return UserErrors.InvalidCredentials;
 
-            return userInfo ?? throw new UnauthorizedException();
+            return userInfo;
         }
     }
 }

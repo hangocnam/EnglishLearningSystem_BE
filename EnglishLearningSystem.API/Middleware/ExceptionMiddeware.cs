@@ -1,18 +1,11 @@
-﻿using EnglishLearningSystem.Application.Common.Exceptions;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace EnglishLearningSystem.API.Middleware
 {
-    public class ExceptionMiddeware
+    public class ExceptionMiddeware(RequestDelegate next, ILogger<ExceptionMiddeware> logger)
     {
-        private readonly RequestDelegate _next;
-        private readonly ILogger<ExceptionMiddeware> _logger;
-
-        public ExceptionMiddeware(RequestDelegate next, ILogger<ExceptionMiddeware> logger)
-        {
-            _next = next;
-            _logger = logger;
-        }
+        private readonly RequestDelegate _next = next;
+        private readonly ILogger<ExceptionMiddeware> _logger = logger;
 
         public async Task InvokeAsync(HttpContext context)
         {

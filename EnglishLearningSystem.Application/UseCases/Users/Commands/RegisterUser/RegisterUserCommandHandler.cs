@@ -1,37 +1,35 @@
-﻿using EnglishLearningSystem.Application.Common.Exceptions;
-using EnglishLearningSystem.Application.Interfaces;
+﻿using EnglishLearningSystem.Application.Interfaces;
 using EnglishLearningSystem.Application.Repositories;
 using EnglishLearningSystem.Application.Services;
+using EnglishLearningSystem.Domain.Common.Results;
 using EnglishLearningSystem.Domain.Entities;
+using EnglishLearningSystem.Domain.Errors;
 using MediatR;
 
 namespace EnglishLearningSystem.Application.UseCases.Users.Commands.RegisterUser
 {
-    public class RegisterUserCommandHandler(
-        IUnitOfWork _unitOfWork,
-        IUserRepository _userRepository,
-        IUserQueryService _userQueryService,
-        IPasswordHasher _passwordHasher
-        ) : IRequestHandler<RegisterUserCommand, RegisterUserResponse>
+    internal sealed class RegisterUserCommandHandler(
+        IUnitOfWork unitOfWork,
+        IUserRepository userRepository,
+        IUserQueryService userQueryService,
+        IPasswordHasher passwordHasher
+        ) : IRequestHandler<RegisterUserCommand, Result<RegisterUserResponse>>
     {
-        public async Task<RegisterUserResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result<RegisterUserResponse>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-            if (await _userQueryService.ExistsByEmailAsync(request.Email, cancellationToken))
-            {
-                throw new UnauthorizedException();
-            }
+            var isExistsEmail = await userQueryService.ExistsByEmailAsync(request.Email, cancellationToken);
 
-            if (await _userQueryService.ExistsByNameAsync(request.Email, cancellationToken))
-            {
-                throw new UnauthorizedException();
-            }
+            var isExistsName = await userQueryService.ExistsByNameAsync(request.UserName, cancellationToken);
 
-            var passwordHash = _passwordHasher.GeneratePasswordHashed(request.Password);
+            if (isExistsEmail) return UserErrors.EmailAlreadyExists(request.Email);
 
-            var user = User.Create(request.FullName, request.Email, passwordHash, request.PhoneNumber);
+            if (isExistsName) return UserErrors.UserNameAlreadyExists(request.UserName);
 
-            await _userRepository.AddAsync(user, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            var passwordHash = passwordHasher.GeneratePasswordHashed(request.Password);
+            var user = User.Create(request.UserName, request.Email, passwordHash, request.PhoneNumber);
+
+            await userRepository.AddAsync(user, cancellationToken);
+            await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return new RegisterUserResponse(user.Id, user.Email);
         }

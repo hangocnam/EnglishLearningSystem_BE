@@ -8,6 +8,5 @@ namespace EnglishLearningSystem.Application.Services
         Task<GetCurrentUserInfoResponse?> GetCurrentUserInfoAsync(Guid userId, CancellationToken cancellationToken);
         Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken);
         Task<bool> ExistsByNameAsync(string userName, CancellationToken cancellationToken);
-        Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken);
     }
 }

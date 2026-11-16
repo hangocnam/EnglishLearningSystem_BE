@@ -9,19 +9,19 @@ namespace EnglishLearningSystem.Domain.Entities
         public string Email { get; private set; } = default!;
         public string? PhoneNumber { get; private set; }
         public string PasswordHash { get; private set; } = default!;
-        public string? Role { get; private set; } = default!;
+        public string Role { get; private set; } = default!;
 
         private User() { }
 
-        public static User Create(string userName, string email, string passwordHash, string phoneNumber)
+        public static User Create(string userName, string email, string passwordHash, string? phoneNumber)
         {
             return new User
             {
                 Id = Guid.NewGuid(),
                 UserName = userName.Trim(),
-                Email = email.Trim(),
+                Email = email.Trim().ToLowerInvariant(),
                 PasswordHash = passwordHash,
-                PhoneNumber = phoneNumber.Trim()
+                PhoneNumber = phoneNumber?.Trim()
             };
         }
     }
