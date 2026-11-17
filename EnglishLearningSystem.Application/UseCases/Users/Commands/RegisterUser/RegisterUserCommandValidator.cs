@@ -17,11 +17,15 @@ namespace EnglishLearningSystem.Application.UseCases.Users.Commands.RegisterUser
                 .Matches("[0-9]").WithMessage("It nhat co 1 so");
 
             RuleFor(x => x.UserName)
-                .NotEmpty().WithMessage("Họ tên là bắt buộc")
-                .MaximumLength(100);
+                .NotEmpty().WithMessage("Tên người dùng là bắt buộc")
+                .MinimumLength(5)
+                .MaximumLength(15);
+
+            RuleFor(x => x.FullName)
+                .MaximumLength(50);
 
             RuleFor(x => x.PhoneNumber)
-                .MaximumLength(12);
+                .Length(12);
         }
     }
 }

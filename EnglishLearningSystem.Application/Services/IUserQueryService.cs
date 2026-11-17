@@ -1,5 +1,4 @@
 ﻿using EnglishLearningSystem.Application.UseCases.Users.Queries.GetCurrentUserInfo;
-using EnglishLearningSystem.Domain.Entities;
 
 namespace EnglishLearningSystem.Application.Services
 {

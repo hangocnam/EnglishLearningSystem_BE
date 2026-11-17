@@ -19,4 +19,6 @@ public sealed record Error(
     public static Error Conflict(string code, params (string, object?)[] args) => Create(code, ErrorType.Conflict, args);
     public static Error BusinessRule(string code, params (string, object?)[] args) => Create(code, ErrorType.BusinessRule, args);
     public static Error Forbidden(string code, params (string, object?)[] args) => Create(code, ErrorType.Forbidden, args);
+    public static Error Unavailable(string code, params (string, object?)[] args) => Create(code, ErrorType.Unavailable, args);
+    public static Error Unexpected(string code, params (string, object?)[] args) => Create(code, ErrorType.Unexpected, args);
 }

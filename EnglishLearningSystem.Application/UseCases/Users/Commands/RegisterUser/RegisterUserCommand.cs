@@ -7,7 +7,8 @@ namespace EnglishLearningSystem.Application.UseCases.Users.Commands.RegisterUser
             string Email,
             string Password,
             string UserName,
-            string PhoneNumber
+            string? FullName,
+            string? PhoneNumber
 
         ) : IRequest<Result<RegisterUserResponse>>;
 

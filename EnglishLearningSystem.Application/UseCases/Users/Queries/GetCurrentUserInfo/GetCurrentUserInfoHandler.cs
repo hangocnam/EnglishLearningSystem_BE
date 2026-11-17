@@ -1,5 +1,4 @@
-﻿using EnglishLearningSystem.Application.Common.Exceptions;
-using EnglishLearningSystem.Application.Interfaces;
+﻿using EnglishLearningSystem.Application.Interfaces;
 using EnglishLearningSystem.Application.Services;
 using EnglishLearningSystem.Domain.Common.Results;
 using EnglishLearningSystem.Domain.Errors;
@@ -13,11 +12,11 @@ namespace EnglishLearningSystem.Application.UseCases.Users.Queries.GetCurrentUse
         {
             Guid? userId = currentUser.UserId;
             
-            if (userId is null)  return UserErrors.InvalidCredentials;
+            if (userId is null) return AuthErrors.Unauthenticated;
 
             var userInfo = await userQueryService.GetCurrentUserInfoAsync(userId.Value, cancellationToken);
 
-            if (userInfo is null) return UserErrors.InvalidCredentials;
+            if (userInfo is null) return UserErrors.NotFound(userId.Value);
 
             return userInfo;
         }

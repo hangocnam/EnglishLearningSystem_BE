@@ -1,6 +1,6 @@
 ﻿using EnglishLearningSystem.Application.Services;
 using EnglishLearningSystem.Application.UseCases.Users.Queries.GetCurrentUserInfo;
-using EnglishLearningSystem.Domain.Entities;
+using EnglishLearningSystem.Domain.Common.Utilities;
 using Microsoft.EntityFrameworkCore;
 
 namespace EnglishLearningSystem.Infrastructure.Persistence.EFCore.Services
@@ -9,14 +9,14 @@ namespace EnglishLearningSystem.Infrastructure.Persistence.EFCore.Services
     {
         public async Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken)
         {
-            var normalizedEmail = email.Trim().ToLowerInvariant();
+            var normalizedEmail = TextUtilities.Normalize(email);
             return await context.Users
                 .AnyAsync(x => x.Email == normalizedEmail, cancellationToken);
         }
 
         public async Task<bool> ExistsByNameAsync(string userName, CancellationToken cancellationToken)
         {
-            var normalizedName = userName.Trim().ToLowerInvariant();
+            var normalizedName = TextUtilities.Normalize(userName);
             return await context.Users
                 .AnyAsync(x => x.UserName.ToLower() == normalizedName, cancellationToken);
         }

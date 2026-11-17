@@ -1,6 +1,6 @@
 ﻿using EnglishLearningSystem.Application.Interfaces;
+using EnglishLearningSystem.Infrastructure.Securities;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace EnglishLearningSystem.API.Persistence
 {
@@ -41,7 +41,7 @@ namespace EnglishLearningSystem.API.Persistence
         public IReadOnlyCollection<string> Role =>
             _httpContextAccessor.HttpContext?
                 .User
-                .FindAll(ClaimTypes.Role)
+                .FindAll(AppClaimTypes.Role)
                 .Select(x => x.Value)
                 .ToList()
             ?? [];

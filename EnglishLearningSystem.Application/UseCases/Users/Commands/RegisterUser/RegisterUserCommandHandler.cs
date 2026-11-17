@@ -18,15 +18,13 @@ namespace EnglishLearningSystem.Application.UseCases.Users.Commands.RegisterUser
         public async Task<Result<RegisterUserResponse>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var isExistsEmail = await userQueryService.ExistsByEmailAsync(request.Email, cancellationToken);
-
-            var isExistsName = await userQueryService.ExistsByNameAsync(request.UserName, cancellationToken);
-
             if (isExistsEmail) return UserErrors.EmailAlreadyExists(request.Email);
 
+            var isExistsName = await userQueryService.ExistsByNameAsync(request.UserName, cancellationToken);
             if (isExistsName) return UserErrors.UserNameAlreadyExists(request.UserName);
 
             var passwordHash = passwordHasher.GeneratePasswordHashed(request.Password);
-            var user = User.Create(request.UserName, request.Email, passwordHash, request.PhoneNumber);
+            var user = User.Create(request.UserName, request.FullName, request.Email, passwordHash, request.PhoneNumber);
 
             await userRepository.AddAsync(user, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
