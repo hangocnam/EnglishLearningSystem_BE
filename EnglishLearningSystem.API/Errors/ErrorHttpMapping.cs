@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using EnglishLearningSystem.API.Localization;
 using EnglishLearningSystem.Domain.Common.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -25,12 +26,13 @@ public static class ErrorHttpMapping
 
     public static ProblemDetails ToProblemDetails(this Error error, HttpContext http)
     {
+        var localizer = http.RequestServices.GetRequiredService<IErrorLocalizer>();
         var status = error.Type.ToStatusCode();
         var problem = new ProblemDetails
         {
             Status = status,
             Title = ReasonPhrases.GetReasonPhrase(status),
-            Detail = error.Code, // TODO (IErrorLocalizer)
+            Detail = localizer.Localize(error.Code, error.Params),
             Instance = http.Request.Path
         };
 
@@ -44,10 +46,12 @@ public static class ErrorHttpMapping
 
         if (error.FieldErrors is { Count: > 0 })
         {
-            // Return only error codes per field, not field Params (they may contain user input, e.g. passwords)
+            // Return code + localized message per field, not the raw field Params
             problem.Extensions["errors"] = error.FieldErrors
                 .GroupBy(f => f.Field)
-                .ToDictionary(g => g.Key, g => g.Select(f => f.Code).ToArray());
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(f => new FieldErrorResponse(f.Code, localizer.Localize(f.Code, f.Params))).ToArray());
         }
 
         return problem;

@@ -1,12 +1,14 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using EnglishLearningSystem.API.Errors;
+using EnglishLearningSystem.API.Localization;
 using EnglishLearningSystem.API.Persistence;
 using EnglishLearningSystem.Application.Interfaces;
 using EnglishLearningSystem.Domain.Common.Results;
 using EnglishLearningSystem.Domain.Errors;
 using EnglishLearningSystem.Infrastructure.Securities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -20,8 +22,27 @@ namespace EnglishLearningSystem.API
             services.AddHttpContextAccessor();
             services.AddScoped<ICurrentUser, CurentUser>();
 
+            services.AddErrorLocalization();
             services.AddJwtAuthentication();
             services.AddInvalidModelStateResponse();
+
+            return services;
+        }
+
+        private static IServiceCollection AddErrorLocalization(this IServiceCollection services)
+        {
+            services.AddLocalization();
+            services.AddSingleton<IErrorLocalizer, ErrorLocalizer>();
+
+            // Culture comes from the Accept-Language header; "vi" when missing or unsupported
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                string[] cultures = ["vi", "en"];
+                options.SetDefaultCulture(cultures[0])
+                    .AddSupportedCultures(cultures)
+                    .AddSupportedUICultures(cultures);
+                options.RequestCultureProviders = [new AcceptLanguageHeaderRequestCultureProvider()];
+            });
 
             return services;
         }

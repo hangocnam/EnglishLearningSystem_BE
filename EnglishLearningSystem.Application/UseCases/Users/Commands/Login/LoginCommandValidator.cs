@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using EnglishLearningSystem.Domain.Errors;
+using FluentValidation;
 
 namespace EnglishLearningSystem.Application.UseCases.Users.Commands.Login
 {
@@ -7,10 +8,11 @@ namespace EnglishLearningSystem.Application.UseCases.Users.Commands.Login
         public LoginCommandValidator()
         {
             RuleFor(x => x.Email)
-                .NotEmpty().WithMessage("Email không được để trống")
-                .EmailAddress().WithMessage("Email invalid format");
+                .NotEmpty().WithErrorCode(ValidationErrors.Required)
+                .EmailAddress().WithErrorCode(ValidationErrors.InvalidEmail);
+
             RuleFor(x => x.Password)
-                .NotEmpty().WithMessage("Mật khẩu không được để trống");
+                .NotEmpty().WithErrorCode(ValidationErrors.Required);
         }
     }
 }

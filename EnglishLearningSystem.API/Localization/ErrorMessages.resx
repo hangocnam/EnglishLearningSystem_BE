@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Validation.Required" xml:space="preserve">
+    <value>Trường này là bắt buộc</value>
+  </data>
+  <data name="Validation.InvalidEmail" xml:space="preserve">
+    <value>Email không hợp lệ</value>
+  </data>
+  <data name="Validation.MinLength" xml:space="preserve">
+    <value>Phải có ít nhất {MinLength} ký tự</value>
+  </data>
+  <data name="Validation.MaxLength" xml:space="preserve">
+    <value>Không được vượt quá {MaxLength} ký tự</value>
+  </data>
+  <data name="Validation.ExactLength" xml:space="preserve">
+    <value>Phải có đúng {MaxLength} ký tự</value>
+  </data>
+  <data name="Validation.MustContainUppercase" xml:space="preserve">
+    <value>Phải chứa ít nhất 1 chữ viết hoa</value>
+  </data>
+  <data name="Validation.MustContainDigit" xml:space="preserve">
+    <value>Phải chứa ít nhất 1 chữ số</value>
+  </data>
+  <data name="Validation.InvalidFormat" xml:space="preserve">
+    <value>Dữ liệu không đúng định dạng</value>
+  </data>
+  <data name="General.ValidationFailed" xml:space="preserve">
+    <value>Dữ liệu không hợp lệ</value>
+  </data>
+  <data name="General.Conflict" xml:space="preserve">
+    <value>Dữ liệu bị xung đột hoặc đã tồn tại, vui lòng thử lại</value>
+  </data>
+  <data name="General.DatabaseUnavailable" xml:space="preserve">
+    <value>Hệ thống đang tạm thời gián đoạn, vui lòng thử lại sau</value>
+  </data>
+  <data name="General.Unexpected" xml:space="preserve">
+    <value>Đã xảy ra lỗi không mong muốn</value>
+  </data>
+  <data name="User.NotFound" xml:space="preserve">
+    <value>Không tìm thấy người dùng</value>
+  </data>
+  <data name="User.EmailAlreadyExists" xml:space="preserve">
+    <value>Email {email} đã được sử dụng</value>
+  </data>
+  <data name="User.UserNameAlreadyExists" xml:space="preserve">
+    <value>Tên người dùng {userName} đã tồn tại</value>
+  </data>
+  <data name="User.InvalidCredentials" xml:space="preserve">
+    <value>Email hoặc mật khẩu không đúng</value>
+  </data>
+  <data name="Auth.Unauthenticated" xml:space="preserve">
+    <value>Bạn cần đăng nhập để tiếp tục</value>
+  </data>
+  <data name="Auth.TokenExpired" xml:space="preserve">
+    <value>Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại</value>
+  </data>
+</root>

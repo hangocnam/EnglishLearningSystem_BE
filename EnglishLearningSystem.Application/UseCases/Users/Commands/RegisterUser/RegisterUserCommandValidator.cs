@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using EnglishLearningSystem.Domain.Errors;
+using FluentValidation;
 
 namespace EnglishLearningSystem.Application.UseCases.Users.Commands.RegisterUser
 {
@@ -7,25 +8,25 @@ namespace EnglishLearningSystem.Application.UseCases.Users.Commands.RegisterUser
         public RegisterUserCommandValidator()
         {
             RuleFor(x => x.Email)
-                .NotEmpty().WithMessage("Email là bắt buộc")
-                .EmailAddress().WithMessage("Email không hợp lệ");
+                .NotEmpty().WithErrorCode(ValidationErrors.Required)
+                .EmailAddress().WithErrorCode(ValidationErrors.InvalidEmail);
 
             RuleFor(x => x.Password)
-                .NotEmpty()
-                .MinimumLength(8).WithMessage("Min 8 characters")
-                .Matches("[A-Z]").WithMessage("It nhat 1 chu viet hoa")
-                .Matches("[0-9]").WithMessage("It nhat co 1 so");
+                .NotEmpty().WithErrorCode(ValidationErrors.Required)
+                .MinimumLength(8).WithErrorCode(ValidationErrors.MinLength)
+                .Matches("[A-Z]").WithErrorCode(ValidationErrors.MustContainUppercase)
+                .Matches("[0-9]").WithErrorCode(ValidationErrors.MustContainDigit);
 
             RuleFor(x => x.UserName)
-                .NotEmpty().WithMessage("Tên người dùng là bắt buộc")
-                .MinimumLength(5)
-                .MaximumLength(15);
+                .NotEmpty().WithErrorCode(ValidationErrors.Required)
+                .MinimumLength(5).WithErrorCode(ValidationErrors.MinLength)
+                .MaximumLength(15).WithErrorCode(ValidationErrors.MaxLength);
 
             RuleFor(x => x.FullName)
-                .MaximumLength(50);
+                .MaximumLength(50).WithErrorCode(ValidationErrors.MaxLength);
 
             RuleFor(x => x.PhoneNumber)
-                .Length(12);
+                .Length(12).WithErrorCode(ValidationErrors.ExactLength);
         }
     }
 }
