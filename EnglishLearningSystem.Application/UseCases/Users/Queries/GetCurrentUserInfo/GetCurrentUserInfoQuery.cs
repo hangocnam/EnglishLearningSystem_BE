@@ -1,9 +1,9 @@
 ﻿using EnglishLearningSystem.Domain.Common.Results;
-using MediatR;
+using EnglishLearningSystem.Application.Common.Messaging;
 
 namespace EnglishLearningSystem.Application.UseCases.Users.Queries.GetCurrentUserInfo
 {
-    public sealed record GetCurrentUserInfoQuery : IRequest<Result<GetCurrentUserInfoResponse>>;
+    public sealed record GetCurrentUserInfoQuery : IQuery<GetCurrentUserInfoResponse>;
 
     public sealed class GetCurrentUserInfoResponse
     {

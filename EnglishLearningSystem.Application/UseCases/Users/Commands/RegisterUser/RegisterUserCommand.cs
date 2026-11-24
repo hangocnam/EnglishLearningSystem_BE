@@ -1,5 +1,5 @@
 ﻿using EnglishLearningSystem.Domain.Common.Results;
-using MediatR;
+using EnglishLearningSystem.Application.Common.Messaging;
 
 namespace EnglishLearningSystem.Application.UseCases.Users.Commands.RegisterUser
 {
@@ -10,7 +10,7 @@ namespace EnglishLearningSystem.Application.UseCases.Users.Commands.RegisterUser
             string? FullName,
             string? PhoneNumber
 
-        ) : IRequest<Result<RegisterUserResponse>>;
+        ) : ICommand<RegisterUserResponse>;
 
     public record RegisterUserResponse(Guid UserId, string Email);
 }

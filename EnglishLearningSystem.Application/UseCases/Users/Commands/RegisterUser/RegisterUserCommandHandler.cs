@@ -4,7 +4,7 @@ using EnglishLearningSystem.Application.Services;
 using EnglishLearningSystem.Domain.Common.Results;
 using EnglishLearningSystem.Domain.Entities;
 using EnglishLearningSystem.Domain.Errors;
-using MediatR;
+using EnglishLearningSystem.Application.Common.Messaging;
 
 namespace EnglishLearningSystem.Application.UseCases.Users.Commands.RegisterUser
 {
@@ -13,7 +13,7 @@ namespace EnglishLearningSystem.Application.UseCases.Users.Commands.RegisterUser
         IUserRepository userRepository,
         IUserQueryService userQueryService,
         IPasswordHasher passwordHasher
-        ) : IRequestHandler<RegisterUserCommand, Result<RegisterUserResponse>>
+        ) : ICommandHandler<RegisterUserCommand, RegisterUserResponse>
     {
         public async Task<Result<RegisterUserResponse>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {

@@ -2,7 +2,7 @@
 using EnglishLearningSystem.Application.Repositories;
 using EnglishLearningSystem.Domain.Common.Results;
 using EnglishLearningSystem.Domain.Errors;
-using MediatR;
+using EnglishLearningSystem.Application.Common.Messaging;
 
 namespace EnglishLearningSystem.Application.UseCases.Users.Commands.Login
 {
@@ -10,7 +10,7 @@ namespace EnglishLearningSystem.Application.UseCases.Users.Commands.Login
         IUserRepository userRepo,
         IPasswordHasher passwordHasher,
         ITokenService tokenService
-        ) : IRequestHandler<LoginCommand, Result<LoginResponse>>
+        ) : ICommandHandler<LoginCommand, LoginResponse>
     {
         public async Task<Result<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {

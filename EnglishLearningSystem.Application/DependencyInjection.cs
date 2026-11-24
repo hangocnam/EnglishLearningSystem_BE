@@ -1,4 +1,5 @@
 ﻿using EnglishLearningSystem.Application.Common.Behaviors;
+using EnglishLearningSystem.Application.Common.Messaging;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,8 @@ namespace EnglishLearningSystem.Application
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             var assembly = Assembly.GetExecutingAssembly();
+
+            RequestConventionGuard.EnsureValid(assembly);
 
             services.AddMediatR(cfg =>
             {

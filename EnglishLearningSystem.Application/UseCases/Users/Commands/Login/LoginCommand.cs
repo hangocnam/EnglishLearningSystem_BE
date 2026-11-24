@@ -1,5 +1,5 @@
 ﻿using EnglishLearningSystem.Domain.Common.Results;
-using MediatR;
+using EnglishLearningSystem.Application.Common.Messaging;
 
 namespace EnglishLearningSystem.Application.UseCases.Users.Commands.Login
 {
@@ -7,7 +7,7 @@ namespace EnglishLearningSystem.Application.UseCases.Users.Commands.Login
     (
         string Email,
         string Password
-    ) : IRequest<Result<LoginResponse>>;
+    ) : ICommand<LoginResponse>;
 
 
     public record LoginResponse

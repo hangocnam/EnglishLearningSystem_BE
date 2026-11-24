@@ -2,11 +2,11 @@
 using EnglishLearningSystem.Application.Services;
 using EnglishLearningSystem.Domain.Common.Results;
 using EnglishLearningSystem.Domain.Errors;
-using MediatR;
+using EnglishLearningSystem.Application.Common.Messaging;
 
 namespace EnglishLearningSystem.Application.UseCases.Users.Queries.GetCurrentUserInfo
 {
-    internal sealed class GetCurrentUserInfoHandler(ICurrentUser currentUser, IUserQueryService userQueryService) : IRequestHandler<GetCurrentUserInfoQuery, Result<GetCurrentUserInfoResponse>>
+    internal sealed class GetCurrentUserInfoHandler(ICurrentUser currentUser, IUserQueryService userQueryService) : IQueryHandler<GetCurrentUserInfoQuery, GetCurrentUserInfoResponse>
     {
         public async Task<Result<GetCurrentUserInfoResponse>> Handle(GetCurrentUserInfoQuery request, CancellationToken cancellationToken)
         {

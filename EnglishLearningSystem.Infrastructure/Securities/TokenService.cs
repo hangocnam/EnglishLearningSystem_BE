@@ -8,14 +8,9 @@ using System.Text;
 
 namespace EnglishLearningSystem.Infrastructure.Securities
 {
-    public class TokenService : ITokenService
+    public class TokenService(IOptions<JwtSettings> option) : ITokenService
     {
-        private readonly JwtSettings _jwtSetting;
-
-        public TokenService(IOptions<JwtSettings> option)
-        {
-            _jwtSetting = option.Value;
-        }
+        private readonly JwtSettings _jwtSetting = option.Value;
 
         public string GenerateToken(User user)
         {
