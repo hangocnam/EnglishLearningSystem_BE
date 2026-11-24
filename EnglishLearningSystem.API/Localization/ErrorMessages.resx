@@ -58,4 +58,19 @@
   <data name="Auth.TokenExpired" xml:space="preserve">
     <value>Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại</value>
   </data>
+  <data name="General.BadRequest" xml:space="preserve">
+    <value>Yêu cầu không hợp lệ</value>
+  </data>
+  <data name="General.NotFound" xml:space="preserve">
+    <value>Không tìm thấy tài nguyên được yêu cầu</value>
+  </data>
+  <data name="General.MethodNotAllowed" xml:space="preserve">
+    <value>Phương thức HTTP không được hỗ trợ cho địa chỉ này</value>
+  </data>
+  <data name="General.UnsupportedMediaType" xml:space="preserve">
+    <value>Định dạng dữ liệu gửi lên không được hỗ trợ</value>
+  </data>
+  <data name="Auth.Forbidden" xml:space="preserve">
+    <value>Bạn không có quyền thực hiện thao tác này</value>
+  </data>
 </root>

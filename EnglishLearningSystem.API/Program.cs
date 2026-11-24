@@ -8,21 +8,32 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddWebAPI();
 
 // Error handling: every unhandled exception → ProblemDetails with a Domain error code
-builder.Services.AddProblemDetails();
+builder.Services.AddProblemDetails(options =>
+    options.CustomizeProblemDetails = context =>
+    {
+        var problem = context.ProblemDetails;
+
+        problem.Type = null;
+
+        if (!problem.Extensions.ContainsKey(ErrorHttpMapping.ErrorCodeKey))
+        {
+            var status = problem.Status ?? context.HttpContext.Response.StatusCode;
+            problem.ApplyErrorCode(context.HttpContext, ErrorHttpMapping.FallbackErrorCodeFor(status));
+        }
+    });
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    // Adds the "Authorize" button: paste the JWT (without the "Bearer " prefix)
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -48,14 +59,16 @@ builder.Services.AddSwaggerGen(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.UseRequestLocalization(); // before the exception handler so error messages use the request culture
-app.UseExceptionHandler();  // first in the pipeline so it wraps everything after it
-app.UseStatusCodePages();    // 401/403/404 without a body → ProblemDetails
+app.UseRequestLocalization();
+app.UseExceptionHandler();
+app.UseStatusCodePages();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();
 }
 
 app.UseHttpsRedirection();

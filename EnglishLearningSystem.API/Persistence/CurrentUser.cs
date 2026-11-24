@@ -4,14 +4,9 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace EnglishLearningSystem.API.Persistence
 {
-    public class CurentUser : ICurrentUser
+    public class CurrentUser(IHttpContextAccessor httpContextAccessor) : ICurrentUser
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public CurentUser(IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-        }
+        private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
         public Guid? UserId
         {

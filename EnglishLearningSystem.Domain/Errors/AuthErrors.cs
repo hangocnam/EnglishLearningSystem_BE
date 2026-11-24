@@ -9,4 +9,7 @@ public static class AuthErrors
 
     /// <summary>The token has expired.</summary>
     public static readonly Error TokenExpired = Error.Unauthorized("Auth.TokenExpired");
+
+    /// <summary>The user is authenticated but is not allowed to perform this action.</summary>
+    public static readonly Error Forbidden = Error.Forbidden("Auth.Forbidden");
 }

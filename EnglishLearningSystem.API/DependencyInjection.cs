@@ -20,7 +20,7 @@ namespace EnglishLearningSystem.API
         public static IServiceCollection AddWebAPI(this IServiceCollection services)
         {
             services.AddHttpContextAccessor();
-            services.AddScoped<ICurrentUser, CurentUser>();
+            services.AddScoped<ICurrentUser, CurrentUser>();
 
             services.AddErrorLocalization();
             services.AddJwtAuthentication();
@@ -86,21 +86,29 @@ namespace EnglishLearningSystem.API
                                 ? AuthErrors.TokenExpired
                                 : AuthErrors.Unauthenticated;
 
-                            var problem = error.ToProblemDetails(context.HttpContext);
-                            context.Response.StatusCode = problem.Status!.Value;
                             context.Response.Headers.WWWAuthenticate = JwtBearerDefaults.AuthenticationScheme;
+                            await WriteAuthErrorAsync(context.HttpContext, error);
+                        },
 
-                            var problemDetailsService = context.HttpContext.RequestServices.GetRequiredService<IProblemDetailsService>();
-                            await problemDetailsService.WriteAsync(new ProblemDetailsContext
-                            {
-                                HttpContext = context.HttpContext,
-                                ProblemDetails = problem
-                            });
-                        }
+                        // Authenticated but not allowed (e.g. [Authorize(Roles = ...)]): 403 with Auth.Forbidden
+                        OnForbidden = context => WriteAuthErrorAsync(context.HttpContext, AuthErrors.Forbidden)
                     };
                 });
 
             return services;
+        }
+
+        private static async Task WriteAuthErrorAsync(HttpContext httpContext, Error error)
+        {
+            var problem = error.ToProblemDetails(httpContext);
+            httpContext.Response.StatusCode = problem.Status!.Value;
+
+            var problemDetailsService = httpContext.RequestServices.GetRequiredService<IProblemDetailsService>();
+            await problemDetailsService.WriteAsync(new ProblemDetailsContext
+            {
+                HttpContext = httpContext,
+                ProblemDetails = problem
+            });
         }
 
         private static IServiceCollection AddInvalidModelStateResponse(this IServiceCollection services)
